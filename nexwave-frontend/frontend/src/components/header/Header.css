@@ -1,0 +1,48 @@
+/* CSS for the header component */
+/* CSS for the header component */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color:#0f3cc9;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  
+  z-index: 100;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+}
+
+.navigation ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.navigation ul li {
+  margin: 0 48px;
+}
+
+.navigation ul li a {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+}
+
+.profile-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
