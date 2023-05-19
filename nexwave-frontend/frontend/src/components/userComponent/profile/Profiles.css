@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.profile-page {
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  background-color: #ededed;
+
+
+}
+
+.profile-header {
+  display: flex;
+}
+
+.profile-header-left {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0a1f5f;
+  padding: 20px;
+  border-radius: 10px;
+  width: 95%;
+  color: white;
+}
+
+.settings-bar {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0a1f5f;
+  padding: 20px;
+  border-radius: 10px;
+  width: 8%;
+  color: white;
+}
+
+.settings-bar svg {
+  width: 100%;
+  height: auto;
+  fill: white;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+}
+
+.profile-info p {
+  margin-left: 2rem;
+  padding: 0;
+  font-size: 25px;
+}
+
+.profile-info span {
+  margin-left: 2rem;
+  font-size: 16px;
+  color: #6b6868;
+}
+
+.logout-button {
+  padding: 8px 16px;
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.profile-content {
+  display: flex;
+
+}
+
+.profile-left,
+.profile-right {
+  width: 100%;
+}
+
+
+.balance-card {
+  margin-top: 0.rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 10px;
+  width: 95%;
+  position: relative;
+}
+
+.balance-card-heading {
+  text-align: start;
+  font-size: 24px;
+  margin-top: 2rem;
+}
+
+.balance-card::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color:white;
+  transform: translateX(-50%);
+}
+
+.balance-card-left {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 60px;
+  box-sizing: border-box;
+  width: 50%;
+}
+
+.balance-card-right {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 60px;
+  box-sizing: border-box;
+  width: 50%;
+}
+
+.profile-right {
+
+  margin-top: 2rem;
+
+}
+
+.balance-card-left h3 {
+  font-size: 16px;
+  margin: 0;
+  color: #333;
+}
+
+.balance-card-left h1 {
+  font-size: 40px;
+  margin: 5px 0;
+  color: #0a1f5f;
+}
+
+.balance-card-left p {
+  font-size: 14px;
+  margin: 0;
+  color: #6b6868;
+}
+
+
+.balance-card-right h3 {
+  font-size: 16px;
+  margin: 0;
+  color: #333;
+}
+
+.balance-card-right h1 {
+  font-size: 40px;
+  margin: 5px 0;
+  color: #0a1f5f;
+}
+
+.plan-card {
+  margin-top: 0.5rem;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  width: 95%;
+}
+
+.plan-card-heading {
+  font-size: 20px;
+  margin-top: 2rem;
+
+}
+
+.plan-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.plan-card-header h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.recharge-button {
+  padding: 8px 16px;
+  background-color: #0a1f5f;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.plan-card-details {
+  margin-bottom: 10px;
+}
+
+.plan-card-details p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.plan-card-divider {
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.plan-card-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.plan-card-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.plan-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.plan-card-section h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.plan-card-section h1 {
+  font-size: 20px;
+  margin: 5px 0;
+}
+
+.recharge-bar {
+
+  height: 3.5rem;
+  /* Adjust the height as per your preference */
+  background-color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+
+}
+.recharge-bar.active {
+  border-radius: 5px 5px 0 0; /* Set border radius when the dropdown is open */
+}
+
+
+.recharge-bar.active::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color:white;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-height: 160px; /* Set the maximum height of the dropdown menu */
+  overflow-y: auto; /* Enable vertical scrolling when menu exceeds the height */
+  z-index: 2;
+}
+
+.dropdown-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #ddd;
+}
