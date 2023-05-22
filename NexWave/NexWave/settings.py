@@ -14,7 +14,8 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
-
+import firebase_admin
+from firebase_admin import credentials
 
 
 load_dotenv()
@@ -23,6 +24,13 @@ TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_VERIFY_SERVICE_SID = os.getenv('TWILIO_VERIFY_SERVICE_SID')
 TWILIO_PHONE_NUMBER = os.getenv('TWILIO_PHONE_NUMBER')
+CORS_ORIGIN_ALLOW_ALL = True
+
+
+firebase_credentials = r"D:\PROJECT-SECOND\NexWave\NexWave\nexwave-22186-firebase-adminsdk-f5ds6-5088b7805a.json"
+cred = credentials.Certificate(firebase_credentials)
+default_app = firebase_admin.initialize_app(cred)
+
 
 
 client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
@@ -111,7 +119,6 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    
     "corsheaders.middleware.CorsMiddleware",
     
     'django.middleware.security.SecurityMiddleware',
@@ -124,6 +131,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'NexWave.urls'
+
+
 
 TEMPLATES = [
     {

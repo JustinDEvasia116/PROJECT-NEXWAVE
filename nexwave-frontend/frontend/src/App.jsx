@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
 import MedicineForm from './pages/Samplepage';
 import ProfilePage from './pages/ProfilePage';
+import PendingConnectionsPage from './pages/Admins/PendingConnectionsPage';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/sample" element={<MedicineForm/>} />
+        <Route path="/admins/pendingconnections" element={<PendingConnectionsPage/>} />
       </Routes>
     </Router>
   );

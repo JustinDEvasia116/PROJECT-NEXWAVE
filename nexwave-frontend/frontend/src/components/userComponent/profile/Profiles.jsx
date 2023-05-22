@@ -90,10 +90,10 @@ const Profiles = () => {
                     <div className="recharge-bar">Recharge</div>
                     <div className={`recharge-bar ${dropdownStates[0] ? 'active' : ''}`}
                         onClick={() => toggleDropdown(0)}
-                        style={{ marginBottom: activeDropdown === 0 ? '160px' : '0' }}
+                        style={{ marginBottom: activeDropdown === 0 ? '260px' : '1rem' }}
                     >
 
-                        Recharge
+                        Recharge History
                         {dropdownStates[0] && (
                             <div className="dropdown-menu">
                                 <ul>
@@ -107,9 +107,9 @@ const Profiles = () => {
                     </div>     
                     <div className={`recharge-bar ${dropdownStates[1] ? 'active' : ''}`}
                         onClick={() => toggleDropdown(1)}
-                        style={{ marginBottom: activeDropdown === 1 ? '160px' : '0' }}
+                        style={{ marginBottom: activeDropdown === 1 ? '260px' : '1rem' }}
                     >
-                        Recharge
+                        Invoice History
                         {dropdownStates[1] && (
                             <div className="dropdown-menu">
                                 <ul>
@@ -121,7 +121,7 @@ const Profiles = () => {
                             </div>
                         )}
                     </div>
-                    <div className="recharge-bar">Recharge</div>
+                    
                 
 
                 </div>

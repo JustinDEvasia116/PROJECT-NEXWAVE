@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 .profile-page {
-  padding: 20px;
+  padding: 20px 150px 20px 150px;
+  
   font-family: 'Poppins', sans-serif;
   background-color: #ededed;
 
@@ -31,7 +32,7 @@
   background-color: #0a1f5f;
   padding: 20px;
   border-radius: 10px;
-  width: 8%;
+  width: 10%;
   color: white;
 }
 
@@ -75,7 +76,7 @@
 
 .profile-left,
 .profile-right {
-  width: 100%;
+  width: 90%;
 }
 
 
@@ -99,33 +100,35 @@
 .balance-card::before {
   content: '';
   position: absolute;
-  left: 50%;
+  left: 40%;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background-color:white;
-  transform: translateX(-50%);
+  width: 1px;
+  background-color: #474747;
+  
+  
+  
 }
 
 .balance-card-left {
   display: flex;
   flex-direction: column;
-  padding: 20px 60px;
+  
   box-sizing: border-box;
-  width: 50%;
+  width: 45%;
 }
 
 .balance-card-right {
   display: flex;
   flex-direction: column;
-  padding: 20px 60px;
+  
   box-sizing: border-box;
   width: 50%;
 }
 
 .profile-right {
 
-  margin-top: 2rem;
+  margin-top: 4.28rem;
 
 }
 
@@ -136,7 +139,7 @@
 }
 
 .balance-card-left h1 {
-  font-size: 40px;
+  font-size: 30px;
   margin: 5px 0;
   color: #0a1f5f;
 }
@@ -152,10 +155,11 @@
   font-size: 16px;
   margin: 0;
   color: #333;
+  margin-top: -1rem;
 }
 
 .balance-card-right h1 {
-  font-size: 40px;
+  font-size: 30px;
   margin: 5px 0;
   color: #0a1f5f;
 }
@@ -207,7 +211,7 @@
 }
 
 .plan-card-divider {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #474747;
   margin: 10px 0;
 }
 
@@ -245,16 +249,18 @@
   height: 3.5rem;
   /* Adjust the height as per your preference */
   background-color: white;
-  border-radius: 12px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   cursor: pointer;
+  margin-bottom: 1rem ;
 
 }
 .recharge-bar.active {
   border-radius: 5px 5px 0 0; /* Set border radius when the dropdown is open */
+  
 }
 
 
@@ -279,9 +285,9 @@
   display: flex;
   flex-direction: column;
   background-color:white;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 5px 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  max-height: 160px; /* Set the maximum height of the dropdown menu */
+  height: 260px;/* Set the maximum height of the dropdown menu */
   overflow-y: auto; /* Enable vertical scrolling when menu exceeds the height */
   z-index: 2;
 }
@@ -295,6 +301,10 @@
 .dropdown-menu li {
   padding: 10px;
   cursor: pointer;
+  border-bottom: 1px solid #ddd;
+}
+.dropdown-menu li:last-child {
+  border-bottom: none; /* Remove the border from the last item */
 }
 
 .dropdown-menu li:hover {

@@ -34,15 +34,20 @@ class ConnectionSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         address_data = validated_data.pop('address')
-        address = Address.objects.create(**address_data)
+        
         profile_name = validated_data.pop('profile_name')
 
         # Create a new user with a random username and default password
         username = f'new_connection_{uuid.uuid4().hex[:6]}'
         password = make_password(None)  # Generate a default password
         user = User.objects.create(username=username, password=password,is_active=False,)
+        address = Address.objects.create(**address_data,user=user)
 
         # Create the connection instance and assign the user
         connection = Connections.objects.create(address=address, profile_name=profile_name, user=user, **validated_data)
         
         return connection
+    
+class GenerateOTPSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255)
+    phone_number = serializers.CharField(max_length=20)

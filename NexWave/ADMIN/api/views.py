@@ -38,12 +38,15 @@ class TakeActionView(UpdateAPIView):
                 instance.user.username = instance.mob_number
                 instance.user.is_active = True
                 instance.user.save()
+                
                 body = f"Your account with Nexwave is now active! Welcome aboard!"
-                send_sms(instance.mob_number, body)
+                # send_sms(instance.mob_number, body)
                 instance.delete()
                 return Response({'detail': 'Connection request approved.'})
             elif approved == 'false':
+                adress = Address.objects.filter(id=instance.address.id)
                 instance.delete()
+                adress.delete()
                 return Response({'detail': 'Connection request rejected.'})
         return Response({'detail': 'Invalid request.'}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -13,6 +13,7 @@ urlpatterns = [
     path('token/', TokenObtainPairWithMobNumberView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('connections/create/', views.ConnectionCreateView.as_view(), name='connection-create'),
+    path('generate-otp/', views.GenerateOTPView.as_view(), name='generate-otp'),
 
     
 ]
