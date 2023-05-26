@@ -14,6 +14,26 @@ from USER.models import *
 from ADMIN.models import *
 from .twilio_utils import send_sms
 
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        if user.is_superuser:
+            token['is_admin'] = True
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+
+
+
 class PendingConnectionsView(generics.ListAPIView):
     serializer_class = ConnectionSerializer
     permission_classes = [permissions.IsAdminUser]
