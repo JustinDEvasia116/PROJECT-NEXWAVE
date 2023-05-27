@@ -12,7 +12,7 @@ from USER.api.serializers import *
 from ADMIN.api.serializers import *
 from USER.models import *
 from ADMIN.models import *
-from .twilio_utils import send_sms
+from .twilio_utils import MessageHandler
 
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -55,11 +55,12 @@ class TakeActionView(UpdateAPIView):
         approved = request.data.get('approved', None)
         if approved is not None:
             if approved == 'true':
+                mob_number = instance.mob_number
                 instance.user.username = instance.mob_number
                 instance.user.is_active = True
-                instance.user.save()
-                
+                instance.user.save()                
                 body = f"Your account with Nexwave is now active! Welcome aboard!"
+                message_handler = MessageHandler(mob_number,body).sent_activation_sms()
                 # send_sms(instance.mob_number, body)
                 instance.delete()
                 return Response({'detail': 'Connection request approved.'})

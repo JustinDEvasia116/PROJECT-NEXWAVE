@@ -34,9 +34,8 @@ default_app = firebase_admin.initialize_app(cred)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID','twilioaccount')
-TWILIO_AUTH_TOKEN = os.environ.get('TWILIO_AUTH_TOKEN','twiliocode')
-client = Client  (TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+TWILIO_ACCOUNT_SIDD = os.getenv('TWILIO_ACCOUNT_SIDD')
+TWILIO_AUTH_TOKENN = os.getenv('TWILIO_AUTH_TOKENN')
 
 
 # Quick-start development settings - unsuitable for production
@@ -64,7 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'USER',
     'ADMIN',
-    
+    'django_twilio',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
@@ -211,5 +210,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ACCOUNT_SID = TWILIO_ACCOUNT_SID
-AUTH_TOKEN = TWILIO_AUTH_TOKEN
+
