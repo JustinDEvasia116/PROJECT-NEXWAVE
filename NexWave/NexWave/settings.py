@@ -24,12 +24,6 @@ load_dotenv()
 CORS_ORIGIN_ALLOW_ALL = True
 
 
-firebase_credentials = r"D:\PROJECT-SECOND\NexWave\NexWave\nexwave-22186-firebase-adminsdk-f5ds6-5088b7805a.json"
-cred = credentials.Certificate(firebase_credentials)
-default_app = firebase_admin.initialize_app(cred)
-
-
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

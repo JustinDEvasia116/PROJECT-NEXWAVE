@@ -1,22 +1,67 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegistrationPage from './pages/RegistrationPage';
-import MedicineForm from './pages/Samplepage';
+
 import ProfilePage from './pages/ProfilePage';
 import PendingConnectionsPage from './pages/Admins/PendingConnectionsPage';
 import './App.css';
 import AdminLogin from './components/adminComponent/AdminLogin';
+import PrivateRoute from './features/auth/PrivateRoute';
+import AdminPrivateRoute from './features/auth/AdminPrivateRoute';
+
+import RechargePlansPage from './pages/Admins/RechargePlansPage';
+import AdminPage from './pages/Admins/AdminPage';
+import RechargePage from './pages/RechargePage';
+
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+      <Route exact path="/profile/*"
+            element={
+              (
+                <PrivateRoute
+                  element={<ProfilePage/>}
+                />
+              )
+            }
+          />
+      <Route exact path="/"
+            element={
+              (
+                <PrivateRoute
+                  element={<ProfilePage/>}
+                />
+              )
+            }
+          />
+          
+        <Route exact path="/admins/"
+            element={
+              (
+                <AdminPrivateRoute
+                  element={<AdminPage/>}
+                />
+              )
+            }
+          />
+          
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/recharge" element={<RechargePage />} />
+        
+        
+       
+        {/* <Route path="/admins" element={<AdminPage/>} /> */}
+        <Route path="/admins/recharge-plans" element={<RechargePlansPage />} />
+
+
+        {/* <Route path="/profile" element={<ProfilePage />} /> */}
         <Route path="/registration" element={<RegistrationPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/sample" element={<MedicineForm/>} />
+        
+        
         <Route path="/admins/pendingconnections" element={<PendingConnectionsPage/>} />
-        <Route path="/admins/" element={<AdminLogin/>} />
+        <Route path="/admins/login" element={<AdminLogin/>} />
       </Routes>
     </Router>
   );

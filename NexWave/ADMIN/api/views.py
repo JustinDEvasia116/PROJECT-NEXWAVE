@@ -2,7 +2,7 @@ from rest_framework import generics, permissions
 from rest_framework.generics import ListAPIView, UpdateAPIView, CreateAPIView
 from django.contrib.auth.decorators import login_required, permission_required
 from rest_framework.decorators import api_view, permission_classes, action
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser ,AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
 from django.utils.decorators import method_decorator
@@ -13,11 +13,11 @@ from ADMIN.api.serializers import *
 from USER.models import *
 from ADMIN.models import *
 from .twilio_utils import MessageHandler
-
+from django.contrib.auth import get_user_model
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+User = get_user_model()
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -78,14 +78,21 @@ class PlanCategoryCreateAPIView(CreateAPIView):
     def perform_create(self, serializer):
         # Perform any additional logic or data validation here
         serializer.save()
+from .serializers import PlanSerializer, SubscriptionSerializer
 
-class PlanCreateAPIView(CreateAPIView):
-    serializer_class = PlanSerializer
-    permission_classes = [IsAdminUser]
-
-    def perform_create(self, serializer):
-        # Perform any additional logic or data validation here
+class PlanCreateView(APIView):
+    def post(self, request, format=None):
+        serializer = PlanSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class SubscriptionCreateView(APIView):
+    def post(self, request, format=None):
+        serializer = SubscriptionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class RoutesAPIView(APIView):
     def get(self, request):
@@ -96,3 +103,24 @@ class RoutesAPIView(APIView):
             '/admins/plans/add/',
         ]
         return Response(routes)
+
+class RechargePlanListView(generics.ListAPIView):
+    # permission_classes = [IsAuthenticated]   # Authorization required
+    queryset = RechargePlan.objects.all()
+    serializer_class = PlanSerializer
+   
+
+class CategoryListView(generics.ListAPIView):
+    # permission_classes = [IsAuthenticated]  # Authorization required
+    queryset = PlanCategory.objects.all()
+    serializer_class = PlanCategorySerializer
+  
+
+class SubscriptionListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]  # Authorization required
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer    

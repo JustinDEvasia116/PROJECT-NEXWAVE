@@ -22,7 +22,7 @@ class AddressSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('username', 'email' , 'id' , 'is_active')
 
 class ConnectionSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
@@ -49,5 +49,8 @@ class ConnectionSerializer(serializers.ModelSerializer):
         return connection
     
 class GenerateOTPSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255)
-    phone_number = serializers.CharField(max_length=20)
+    mob_number = serializers.CharField(max_length=20)
+    
+class VerifyOTPSerializer(serializers.Serializer):
+    mob_number = serializers.CharField(max_length=20)
+    otp = serializers.CharField(max_length=6)

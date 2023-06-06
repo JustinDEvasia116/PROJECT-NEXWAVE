@@ -1,21 +1,19 @@
-import './PendingConections.css'
+import './PendingConections.css';
+
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { FaBan, FaCheck, FaTrash } from 'react-icons/fa';
 
 function PendingConnections() {
   const [connections, setConnections] = useState([]);
   const authTokens = JSON.parse(localStorage.getItem('authTokens'));
-  
+
   useEffect(() => {
     fetchConnections();
   }, []);
 
   const fetchConnections = async () => {
     try {
-      console.log("AuthTokens: ",authTokens.access)
       const response = await axios.get('http://127.0.0.1:8000/admins/pending-connections/', {
         headers: {
           'Content-type': 'application/json',
@@ -23,8 +21,44 @@ function PendingConnections() {
         },
       });
 
-      console.log('response data:', response.data);
       setConnections(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleApprove = async (connectionId) => {
+    console.log(connectionId)
+    try {
+      await axios.put(`http://127.0.0.1:8000/admins/pending-connections/${connectionId}/actions/`, {
+        approved: 'true',
+      }, {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: 'Bearer ' + String(authTokens.access),
+        },
+      });
+
+      // Remove the approved connection from the connections array
+      setConnections(connections.filter(connection => connection.id !== connectionId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleReject = async (connectionId) => {
+    try {
+      await axios.put(`http://127.0.0.1:8000/admins/pending-connections/${connectionId}/actions/`, {
+        approved: 'false',
+      }, {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: 'Bearer ' + String(authTokens.access),
+        },
+      });
+
+      // Remove the rejected connection from the connections array
+      setConnections(connections.filter(connection => connection.id !== connectionId));
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +66,7 @@ function PendingConnections() {
 
   return (
     <div className='pendings'>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="search-container">
           <input
             type="text"
@@ -67,10 +101,10 @@ function PendingConnections() {
               </td>
               <td>{connection.status}</td>
               <td style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                <button className="approve-button">
+                <button className="approve-button" onClick={() => handleApprove(connection.id)}>
                   Approve
                 </button>
-                <button className="reject-button">
+                <button className="reject-button" onClick={() => handleReject(connection.id)}>
                   Reject
                 </button>
               </td>

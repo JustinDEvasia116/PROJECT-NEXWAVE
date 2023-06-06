@@ -10,7 +10,7 @@ function AdminLogin(props) {
    
     useEffect(() => {
       if (isAdmin) {
-        navigate('/dashboard');
+        navigate('/admins');
       }
     }, [isAdmin,navigate]);
   
@@ -25,7 +25,7 @@ function AdminLogin(props) {
         console.log('response: ', response);
         if (response.status === 200) {
           // Authentication succeeded
-          navigate('/dashboard');
+          navigate('/admins');
         } else {
           // Authentication failed
           alert('Failed to authenticate. Please try again.');

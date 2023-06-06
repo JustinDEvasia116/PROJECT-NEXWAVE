@@ -1,13 +1,22 @@
 import './Profiles.css';
 import React, { useState, useEffect, useRef } from 'react';
+import { logout } from '../../../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+
 // import settingsIcon from '../../../assets/settingsIcon.svg';
 
 const Profiles = () => {
     // Assuming the user's mobile number is fetched from data or state
     const userMobileNumber = "1234567890";
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         // Handle logout logic here
+        dispatch(logout());
+        navigate('/login');
     };
     const [dropdownStates, setDropdownStates] = useState([false, false]);
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -17,7 +26,7 @@ const Profiles = () => {
         setDropdownStates(newDropdownStates);
         setActiveDropdown(activeDropdown === index ? null : index);
     };
-    
+
     return (
         <div className="profile-page">
             <div className='profile-header'>
@@ -87,7 +96,11 @@ const Profiles = () => {
                 </div>
                 <div className='profile-right'>
 
-                    <div className="recharge-bar">Recharge</div>
+                    <div className="recharge-bar">
+                        <a style={{ textDecoration: 'none' }} href="/recharge">
+                            Recharge
+                        </a>
+                    </div>
                     <div className={`recharge-bar ${dropdownStates[0] ? 'active' : ''}`}
                         onClick={() => toggleDropdown(0)}
                         style={{ marginBottom: activeDropdown === 0 ? '260px' : '1rem' }}
@@ -104,7 +117,7 @@ const Profiles = () => {
                                 </ul>
                             </div>
                         )}
-                    </div>     
+                    </div>
                     <div className={`recharge-bar ${dropdownStates[1] ? 'active' : ''}`}
                         onClick={() => toggleDropdown(1)}
                         style={{ marginBottom: activeDropdown === 1 ? '260px' : '1rem' }}
@@ -121,8 +134,8 @@ const Profiles = () => {
                             </div>
                         )}
                     </div>
-                    
-                
+
+
 
                 </div>
             </div>
