@@ -15,5 +15,8 @@ urlpatterns = [
     path('categories/', views.CategoryListView.as_view(), name='category-list'),
     path('subscriptions/', views.SubscriptionListView.as_view(), name='subscription-list'),
     path('users/', views.UserListView.as_view(), name='user-list'),
+    path('chat-options/', views.OptionListAPIView.as_view(), name='option-list'),
+    path('options/<int:parent_id>/child/', views.CreateOptionAPIView.as_view(), name='child-option'),
+    path('options/menu/', views.OptionMenuAPIView.as_view(), name='option-menu'),
     
 ]

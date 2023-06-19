@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.contrib.auth import get_user_model
+
 from rest_framework import generics, permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -7,6 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
+from datetime import date, timedelta
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
 
 from ..models import Connections
 from django.views import View
@@ -16,10 +20,11 @@ from ..models import OTP
 from .twilio_utils import *
 import random
 from .serializers import *
-
+from django.conf import settings
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import Token
-
+import paypalrestsdk
+from paypalrestsdk import Payment
 
 class TokenObtainPairWithMobNumberSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -42,7 +47,18 @@ class ConnectionCreateView(APIView):
     def post(self, request, format=None):
         serializer = ConnectionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            connection = serializer.save()
+
+        # Send a notification to the admin group
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                'admin',  # Group name
+                {
+                    'type': 'notification',
+                    'message': f"New connection created: {connection.id}",
+                }
+            )
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -119,3 +135,50 @@ class UserLoginView(APIView):
             return JsonResponse(response_data, status=status.HTTP_200_OK)
         else:
             return JsonResponse({'message': 'Invalid OTP'}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+
+
+class UserDetailsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_id = request.user.id
+        user = User.objects.get(id=user_id)
+
+        serializer = UserSerializer(user)
+        return JsonResponse(serializer.data)
+    
+class SubscriptionCreateAPIView(APIView):
+    def post(self, request):
+        # Retrieve the data from the request
+        recharge_plan_id = request.data.get('recharge_plan_id')
+        
+        # Validate the data
+        if not recharge_plan_id :
+            return Response({'error': 'Recharge plan ID and Recharge ID are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Retrieve the selected recharge plan
+            recharge_plan = RechargePlan.objects.get(id=recharge_plan_id)
+
+            # Calculate the start and end dates
+            start_date = date.today()
+            end_date = start_date + timedelta(days=recharge_plan.validity)
+
+            # Create the subscription
+            subscription = Subscription.objects.create(
+                plan=recharge_plan,
+                start_date=start_date,
+                end_date=end_date,
+                is_active=start_date <= date.today() <= end_date,
+                billing_info='',
+            )
+
+            # Serialize the subscription data
+            serializer = SubscriptionSerializer(subscription)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except RechargePlan.DoesNotExist:
+            return Response({'error': 'Invalid recharge plan ID'}, status=status.HTTP_400_BAD_REQUEST)

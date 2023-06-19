@@ -16,7 +16,8 @@ urlpatterns = [
     path('connections/create/', views.ConnectionCreateView.as_view(), name='connection-create'),
     path('generate-otp/', views.GenerateOTPView.as_view(), name='generate-otp'),
     path('user-login/', views.UserLoginView.as_view() , name='user-login'),
+    path('user-details/', views.UserDetailsAPIView.as_view(), name='user-details'),
+    path('create-subscription/', views.SubscriptionCreateAPIView.as_view(), name='create-subscription'),
     
-
     
 ]

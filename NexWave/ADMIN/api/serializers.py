@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ADMIN.models import RechargePlan, PlanCategory,Subscription
+from ADMIN.models import RechargePlan, PlanCategory,Subscription,Chat_Option,Notifications
 
 class PlanCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,4 +42,14 @@ class PlanSerializer(serializers.ModelSerializer):
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription
+        fields = '__all__'
+
+class ChatOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chat_Option
+        fields = '__all__'
+        
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notifications
         fields = '__all__'

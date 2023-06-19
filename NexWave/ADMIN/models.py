@@ -17,9 +17,24 @@ class RechargePlan(models.Model):
     category = models.ForeignKey(PlanCategory, on_delete=models.CASCADE)
 
 class Subscription(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     plan = models.ForeignKey(RechargePlan, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
     is_active = models.BooleanField(default=False)
     billing_info = models.CharField(max_length=255)
+
+class Chat_Option(models.Model):
+    text = models.CharField(max_length=255)
+    parent_option = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='sub_options')
+
+    def __str__(self):
+        return self.text
+    
+class Notifications(models.Model):
+    title = models.CharField(max_length=200)
+    notification = models.TextField(max_length=100)
+    count = models.IntegerField()
+    
+    def __str__(self):
+        return str(self.title)
+    

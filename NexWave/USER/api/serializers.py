@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from ..models import Connections, Address
 from django.contrib.auth.hashers import make_password
 import uuid
+from ADMIN.models import *
 
 User = get_user_model()
 
@@ -22,7 +23,7 @@ class AddressSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email' , 'id' , 'is_active')
+        fields = '__all__'
 
 class ConnectionSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
@@ -54,3 +55,10 @@ class GenerateOTPSerializer(serializers.Serializer):
 class VerifyOTPSerializer(serializers.Serializer):
     mob_number = serializers.CharField(max_length=20)
     otp = serializers.CharField(max_length=6)
+    
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = '__all__'

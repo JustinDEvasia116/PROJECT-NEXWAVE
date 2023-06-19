@@ -31,6 +31,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TWILIO_ACCOUNT_SIDD = os.getenv('TWILIO_ACCOUNT_SIDD')
 TWILIO_AUTH_TOKENN = os.getenv('TWILIO_AUTH_TOKENN')
 
+PAYPAL_MODE = os.getenv('PAYPAL_MODE')
+PAYPAL_CLIENT_ID =os.getenv('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = os.getenv('PAYPAL_CLIENT_SECRET')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -49,6 +52,7 @@ AUTH_USER_MODEL = 'USER.User'
 
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,12 +74,20 @@ REST_FRAMEWORK = {
     )
    
 }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+    },
+}
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=55),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
+    "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False,
 
     "ALGORITHM": "HS256",

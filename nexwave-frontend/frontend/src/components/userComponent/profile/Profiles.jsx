@@ -3,15 +3,38 @@ import React, { useState, useEffect, useRef } from 'react';
 import { logout } from '../../../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 
 // import settingsIcon from '../../../assets/settingsIcon.svg';
 
 const Profiles = () => {
     // Assuming the user's mobile number is fetched from data or state
-    const userMobileNumber = "1234567890";
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [user, setUser] = useState([]);
+    const authTokens = JSON.parse(localStorage.getItem('authTokens'));
+
+    useEffect(() => {
+      getUserDetails();
+    }, []);
+
+    const getUserDetails = async () => {
+        try {
+          const response = await axios.get('http://127.0.0.1:8000/api/user-details/', {
+            headers: {
+              'Content-type': 'application/json',
+              Authorization: 'Bearer ' + String(authTokens.access),
+            },
+          });
+    
+          console.log('response data:', response.data);
+          setUser(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
 
     const handleLogout = () => {
         // Handle logout logic here
@@ -32,7 +55,7 @@ const Profiles = () => {
             <div className='profile-header'>
                 <div className="profile-header-left">
                     <div className="profile-info">
-                        <p>{userMobileNumber}</p>
+                        <p>{user.mob_number}</p>
                         <span>|</span>
                         <p>Prepaid</p>
                     </div>

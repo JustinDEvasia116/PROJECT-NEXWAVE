@@ -5,6 +5,8 @@ import { Provider } from "react-redux";
 import store from './redux/store';
 import { setUser } from './features/auth/authSlice';
 import jwt_decode from 'jwt-decode';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const authTokens = JSON.parse(localStorage.getItem('authTokens'));
 if (authTokens && authTokens.access) {
@@ -14,6 +16,8 @@ if (authTokens && authTokens.access) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-  <App />
+    
+      <App />
+   
   </Provider>
 )

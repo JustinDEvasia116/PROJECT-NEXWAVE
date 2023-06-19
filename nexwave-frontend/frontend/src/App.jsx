@@ -12,6 +12,9 @@ import AdminPrivateRoute from './features/auth/AdminPrivateRoute';
 import RechargePlansPage from './pages/Admins/RechargePlansPage';
 import AdminPage from './pages/Admins/AdminPage';
 import RechargePage from './pages/RechargePage';
+import PaymentPage from './pages/PaymentPage';
+import ChatbotPage from './pages/ChatbotPage';
+import AddOptionPage from './pages/Admins/AddOptionPage';
 
 
 function App() {
@@ -48,8 +51,11 @@ function App() {
           />
           
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/recharge" element={<RechargePage />} />
+        <Route path="/chatbot" element={<ChatbotPage/>} />
+        <Route path="/admins/chatmanager" element={<AddOptionPage/>} />
         
+        <Route path="/recharge" element={<RechargePage />} />
+        <Route path="/payment" element={<PaymentPage />} />
         
        
         {/* <Route path="/admins" element={<AdminPage/>} /> */}

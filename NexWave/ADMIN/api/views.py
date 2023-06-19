@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAdminUser ,AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 
 from django.utils.decorators import method_decorator
-from rest_framework import status
+from rest_framework import status,viewsets
 from rest_framework.response import Response
 from USER.api.serializers import *
 from ADMIN.api.serializers import *
@@ -14,6 +14,8 @@ from USER.models import *
 from ADMIN.models import *
 from .twilio_utils import MessageHandler
 from django.contrib.auth import get_user_model
+
+
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -57,6 +59,8 @@ class TakeActionView(UpdateAPIView):
             if approved == 'true':
                 mob_number = instance.mob_number
                 instance.user.username = instance.mob_number
+                instance.user.mob_number = instance.mob_number
+                instance.user.user_address = instance.address
                 instance.user.is_active = True
                 instance.user.save()                
                 body = f"Your account with Nexwave is now active! Welcome aboard!"
@@ -124,3 +128,37 @@ class SubscriptionListView(generics.ListAPIView):
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer    
+
+class OptionListAPIView(APIView):
+    def get(self, request):
+        options = Chat_Option.objects.all()
+        serializer = ChatOptionSerializer(options, many=True)
+        return Response(serializer.data)
+
+class CreateOptionAPIView(APIView):
+    def post(self, request, parent_id):
+        parent_option = Chat_Option.objects.get(pk=parent_id)
+        serializer = ChatOptionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(parent_option=parent_option)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class OptionMenuAPIView(APIView):
+    def get(self, request):
+        option_id = request.query_params.get('option_id')
+        try:
+            parent_option = Chat_Option.objects.get(pk=option_id)
+            sub_options = Chat_Option.objects.filter(parent_option=parent_option)
+            serializer = ChatOptionSerializer(sub_options, many=True)
+            return Response(serializer.data)
+        except Chat_Option.DoesNotExist:
+            return Response({'error': 'Option not found.'}, status=404)
+        
+class NotificationViewsets(viewsets.ModelViewSet):
+    queryset= Notifications.objects.all()
+    serializer_class = NotificationSerializer
+    
+    @action(methods =['POST'],detail= True)
+    def send_notification(self,request,pk):
+        notification = self.get_object()

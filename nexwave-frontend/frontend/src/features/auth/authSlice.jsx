@@ -11,6 +11,7 @@ export const authSlice = createSlice({
     isLoading: true,
     isAdmin: false,
     userLoginSuccess:true,
+    selectedPrice: null,
     
   },
   reducers: {
@@ -35,10 +36,14 @@ export const authSlice = createSlice({
       state.isAdmin = false;
       // handle other state changes on successful logout
     },
+    setSelectedPrice: (state, action) => {
+      state.selectedPrice = action.payload;
+    },
+    
   },
 });
 
-export const { setToken, setUser, setError, setLoading, setIsAdmin, adminLogoutSuccess, } = authSlice.actions;
+export const { setToken, setUser, setError, setLoading, setIsAdmin, adminLogoutSuccess,setSelectedPrice  } = authSlice.actions;
 
 
 

@@ -1,15 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-class User(AbstractUser):
-    pass
+
 
 class Address(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     street = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=10)
+
+class User(AbstractUser):
+    mob_number = models.CharField(max_length=20,null=True, blank=True)
+    user_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
 
 class Connections(models.Model):
     CONNECTION_TYPE_PREPAID = 'prepaid'
