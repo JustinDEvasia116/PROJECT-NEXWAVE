@@ -10,8 +10,17 @@ class Address(models.Model):
     zip_code = models.CharField(max_length=10)
 
 class User(AbstractUser):
-    mob_number = models.CharField(max_length=20,null=True, blank=True)
+    mob_number = models.CharField(max_length=20, null=True, blank=True)
     user_address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True, blank=True)
+    active_subscription = models.ForeignKey(
+        to='ADMIN.Subscription',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return self.username
 
 class Connections(models.Model):
     CONNECTION_TYPE_PREPAID = 'prepaid'

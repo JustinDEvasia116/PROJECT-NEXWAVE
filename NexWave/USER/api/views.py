@@ -149,6 +149,33 @@ class UserDetailsAPIView(APIView):
 
         serializer = UserSerializer(user)
         return JsonResponse(serializer.data)
+ 
+class UserDetailsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_id = request.user.id
+        user = User.objects.get(id=user_id)
+
+        try:
+            subscription = user.active_subscription
+            recharge_plan = subscription.plan
+        except Subscription.DoesNotExist:
+            subscription = None
+            recharge_plan = None
+
+        serializer = UserSerializer(user, context={'request': request})  # Pass the request instead of individual objects
+        data = serializer.data
+
+        if subscription and recharge_plan:
+            subscription_serializer = SubscriptionSerializer(subscription)
+            recharge_plan_serializer = PlanSerializer(recharge_plan)
+            data['active_subscription'] = subscription_serializer.data
+            data['active_subscription']['plan'] = recharge_plan_serializer.data
+
+        return Response(data)
+
+
     
 class SubscriptionCreateAPIView(APIView):
     def post(self, request):

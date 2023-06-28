@@ -10,6 +10,8 @@ import axios from 'axios';
 
 const Payment = () => {
   const selectedPrice = useSelector((state) => state.auth.selectedPrice);
+  const selectedPlan = useSelector((state) => state.auth.selectedPlan);
+  const selectedNumber = useSelector((state) => state.auth.selectedNumber);
   const navigate = useNavigate();
   const Razorpay = useRazorpay();
   const authTokens = JSON.parse(localStorage.getItem('authTokens'));
@@ -25,9 +27,12 @@ const Payment = () => {
       handler: async function (response) {
         console.log("response: ", response)
 
-        toast.success("Payment Successful");
+        
         try {
-          const response = await axios.post('http://127.0.0.1:8000/api/user-details/', {
+          const response = await axios.post('http://127.0.0.1:8000/api/create-subscription/', {
+            recharge_plan_id: selectedPlan,
+            other_field: "other_value"
+          }, {
             headers: {
               'Content-type': 'application/json',
               Authorization: 'Bearer ' + String(authTokens.access),
@@ -39,6 +44,7 @@ const Payment = () => {
         } catch (error) {
           console.log(error);
         }
+        toast.success("Payment Successful");
         console.log(response.razorpay_payment_id);
         console.log(response.razorpay_order_id);
         console.log(response.razorpay_signature);
@@ -86,6 +92,8 @@ const Payment = () => {
         <div className='payment-amount'>
           <p>Amount Payable</p>
           <h1>{selectedPrice}</h1>
+          <h1>{selectedNumber}</h1>
+          
         </div>
         <PayPalButton selectedPrice={selectedPrice} />
         <button className="pay-button" onClick={handleRazorpay}>

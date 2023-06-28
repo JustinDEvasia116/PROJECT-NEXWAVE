@@ -5,6 +5,7 @@ from ..models import Connections, Address
 from django.contrib.auth.hashers import make_password
 import uuid
 from ADMIN.models import *
+from ADMIN.api.serializers import PlanSerializer,SubscriptionSerializer
 
 User = get_user_model()
 
@@ -21,9 +22,23 @@ class AddressSerializer(serializers.ModelSerializer):
         fields = ['street', 'city', 'state', 'zip_code']
 
 class UserSerializer(serializers.ModelSerializer):
+    active_subscription = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'username', 'active_subscription', 'mob_number', 'user_address']
+
+    def get_active_subscription(self, user):
+        subscription = self.context.get('subscription')
+        recharge_plan = self.context.get('recharge_plan')
+
+       
+        subscription_data = SubscriptionSerializer(subscription).data
+        recharge_plan_data = PlanSerializer(recharge_plan).data
+        subscription_data['plan'] = recharge_plan_data
+        return subscription_data
+
+        
 
 class ConnectionSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
@@ -57,8 +72,3 @@ class VerifyOTPSerializer(serializers.Serializer):
     otp = serializers.CharField(max_length=6)
     
 
-
-class SubscriptionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Subscription
-        fields = '__all__'

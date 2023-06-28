@@ -1,8 +1,9 @@
 # models.py
 from django.db import models
 
-from USER.models import User
-# User = get_user_model()
+
+
+
 
 class PlanCategory(models.Model):
     name = models.CharField(max_length=255)
@@ -22,6 +23,8 @@ class Subscription(models.Model):
     end_date = models.DateField()
     is_active = models.BooleanField(default=False)
     billing_info = models.CharField(max_length=255)
+    
+
 
 class Chat_Option(models.Model):
     text = models.CharField(max_length=255)
@@ -37,4 +40,4 @@ class Notifications(models.Model):
     
     def __str__(self):
         return str(self.title)
-    
+

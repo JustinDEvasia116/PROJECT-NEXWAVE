@@ -71,7 +71,7 @@ const Profiles = () => {
                     <div className="balance-card">
                         <div className="balance-card-left">
                             <h3>Data Balance</h3>
-                            <h1>2.5 GB</h1>
+                            <h1>{user.active_subscription?.plan?.data_limit} GB</h1>
                             <p>Renews in 8 Hrs</p>
                         </div>
                         <div className="balance-card-right">
@@ -82,7 +82,8 @@ const Profiles = () => {
                     <h2 className="plan-card-heading">My Plans</h2>
                     <div className="plan-card">
                         <div className="plan-card-header">
-                            <h2>Rs 249-1M-1.5/D</h2>
+                        <h2>{user.active_subscription?.plan?.name}</h2>
+
                             <button className="recharge-button">Recharge</button>
                         </div>
                         <div className="plan-card-details">
@@ -94,7 +95,7 @@ const Profiles = () => {
                                 <h3>Data</h3>
                             </div>
                             <div className="plan-card-right">
-                                <h3>2.5 GB/Day</h3>
+                            <h3>{user.active_subscription?.plan?.data_limit} GB/Day</h3>
                             </div>
                         </div>
                         <hr className="plan-card-divider" />
@@ -103,7 +104,7 @@ const Profiles = () => {
                                 <h3>Voice</h3>
                             </div>
                             <div className="plan-card-right">
-                                <h3>Unlimited</h3>
+                            <h3>{user.active_subscription?.plan?.voice_limit} mins</h3>
                             </div>
                         </div>
                         <hr className="plan-card-divider" />
@@ -112,7 +113,7 @@ const Profiles = () => {
                                 <h3>SMS</h3>
                             </div>
                             <div className="plan-card-right">
-                                <h3>100 sms/Day</h3>
+                            <h3>{user.active_subscription?.plan?.sms_limit} sms/Day</h3>
                             </div>
                         </div>
                     </div>

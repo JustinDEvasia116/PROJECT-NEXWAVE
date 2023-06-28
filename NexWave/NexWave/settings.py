@@ -59,8 +59,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'USER',
+    
     'ADMIN',
+    'USER',
     'django_twilio',
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
@@ -165,10 +166,10 @@ WSGI_APPLICATION = 'NexWave.wsgi.application'
 DATABASES = {
 'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'DB_NexWave',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST' : 'localhost',
+        'PASSWORD': 'adminadmin',
+        'HOST' : 'nexwave-db.cemau6l87xw4.eu-north-1.rds.amazonaws.com',
         'PORT' : '5432'
         
     }

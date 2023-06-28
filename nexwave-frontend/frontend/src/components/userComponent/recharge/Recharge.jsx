@@ -1,18 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './recharge.css'; // Import your CSS file for recharge page styling
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedPrice } from '../../../features/auth/authSlice';
+import { setSelectedPrice, setSelectedPlan, setSelectedNumber } from '../../../features/auth/authSlice';
+import jwt_decode from 'jwt-decode';
 
 const Recharge = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [allPlans, setAllplans] = useState([]);
   const [rechargePlans, setRechargePlans] = useState([]);
+  const [rechargeNum, setRechargeNum] = useState('');
   const [categories, setCategories] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [inputError, setInputError] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const selectedPrice = useSelector((state) => state.auth.selectedPrice);
+  const selectedPlan = useSelector((state) => state.auth.selectedPlan);
+  const authTokens = JSON.parse(localStorage.getItem('authTokens'));
+  const accessToken = authTokens && authTokens.access;
+  const recharge_num = accessToken && jwt_decode(accessToken).username;
+
+  useEffect(() => {
+    setRechargeNum(recharge_num.substring(3));
+  }, []);
 
   useEffect(() => {
     // Fetch and set the categories
@@ -38,32 +50,95 @@ const Recharge = () => {
     setSelectedCategory('Popular Plans');
   }, []);
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleInputChange = (event) => {
+    const input = event.target.value;
+    if (/^\d{0,10}$/.test(input)) {
+      setRechargeNum(input);
+      setInputError('');
+    } else {
+      setInputError('Only 10 digits are allowed.');
+    }
+  };
+
+  const handlePageClick = (event) => {
+    if (parentRef.current && !parentRef.current.contains(event.target)) {
+      if (rechargeNum.length === 10) {
+        setIsEditing(false);
+      } else {
+        setInputError('Please enter 10 digits.');
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isEditing) {
+      const timer = setTimeout(() => {
+        document.addEventListener('click', handlePageClick);
+      }, 100);
+      return () => {
+        clearTimeout(timer);
+        document.removeEventListener('click', handlePageClick);
+      };
+    }
+  }, [isEditing]);
+
+  const parentRef = useRef(null);
+
   const handleCategoryClick = (category) => {
     setSelectedCategory(category.name);
     const filteredPlans = allPlans.filter((plan) => plan.category === category.id);
     setRechargePlans(filteredPlans);
   };
 
-  const handleBuyButtonClick = (price) => {
-    // Dispatch the action to set the selected price in the Redux store
-    dispatch(setSelectedPrice(price));
-
-    // Navigate to the payment page
+  const handleBuyButtonClick = (plan) => {
+    dispatch(setSelectedPrice(plan.price));
+    dispatch(setSelectedPlan(plan.id));
+    dispatch(setSelectedNumber(rechargeNum));
     navigate('/payment');
   };
 
   return (
     <div className="recharge-container">
       <div className="recharge-left-section">
-        {/* Content for the left section */}
         <div className="recharge-card">
-          {/* Content inside the left section card */}
           <div className="recharge-card-content">
             <h2>Select Plan</h2>
-            <div className="recharge-card-info">
-              <p>9645921191</p>
-              <button className="edit-button">Edit</button>
-            </div>
+            {isEditing ? (
+              <div className="recharge-card-info" ref={parentRef}>
+                <input
+                  type="text"
+                  value={rechargeNum}
+                  onChange={handleInputChange}
+                  maxLength={10}
+                  className="input-field" // Add the class name here
+                />
+
+                {inputError && <p className="input-error">{inputError}</p>}
+              </div>
+            ) : (
+              <div className="recharge-card-info">
+                {rechargeNum.length === 10 ? (
+                  <p>{rechargeNum}</p>
+                ) : (
+                  <input
+                    type="text"
+                    value={rechargeNum}
+                    onChange={handleInputChange}
+                    maxLength={10}
+                    style={{ border: 'none', outline: 'none' }}
+                    readOnly
+                  />
+                )}
+                <button className="edit-button" onClick={handleEditClick}>
+                  Edit
+                </button>
+              </div>
+            )}
+
             <div className="plan-categories">
               {categories.map((category) => (
                 <p key={category.id} onClick={() => handleCategoryClick(category)}>
@@ -76,9 +151,7 @@ const Recharge = () => {
       </div>
 
       <div className="recharge-right-section">
-        {/* Content for the right section */}
         <div className="recharge-card">
-          {/* Content inside the right section card */}
           {selectedCategory ? (
             <>
               <h2>{selectedCategory}</h2>
@@ -102,8 +175,7 @@ const Recharge = () => {
                         <a href="#" className="view-details">
                           View Details
                         </a>
-
-                        <button className="buy-button" onClick={() => handleBuyButtonClick(plan.price)}>
+                        <button className="buy-button" onClick={() => handleBuyButtonClick(plan)}>
                           Buy
                         </button>
                       </li>
